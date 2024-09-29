@@ -15,6 +15,10 @@ import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice";
+import { useEffect } from "react";
+import { Skeleton } from "./components/ui/skeleton";
 
 // import ShoppingLayout from "./components/shopping-view/layout";
 // import NotFound from "./pages/not-found";
@@ -33,19 +37,18 @@ import UnauthPage from "./pages/unauth-page";
 // import SearchProducts from "./pages/shopping-view/search";
 
 function App() {
-  // const { user, isAuthenticated, isLoading } = useSelector(
-  //   (state) => state.auth
-  // );
-  // const dispatch = useDispatch();
-  const isAuthenticated = false;
-  const user = null;
-  // useEffect(() => {
-  //   dispatch(checkAuth());
-  // }, [dispatch]);
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
 
-  // if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
 
-  // console.log(isLoading, user);
+  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+
+  console.log(isLoading, user);
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -73,9 +76,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            // <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-            // </CheckAuth>
-            <AdminLayout />
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
           }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
