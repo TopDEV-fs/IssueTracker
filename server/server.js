@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const dbConnection = require("./database/dbConnection");
 const AuthRouter = require("./routes/auth/auth-routes");
+const adminProductsRouter = require("./routes/admin/products-route");
 // const authRouter = require("./routes/auth/auth-routes");
 // const adminProductsRouter = require("./routes/admin/products-routes");
 // const adminOrderRouter = require("./routes/admin/order-routes");
@@ -44,7 +45,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", AuthRouter);
-// app.use("/api/admin/products", adminProductsRouter);
+app.use("/api/admin/products", adminProductsRouter);
 // app.use("/api/admin/orders", adminOrderRouter);
 
 // app.use("/api/shop/products", shopProductsRouter);
