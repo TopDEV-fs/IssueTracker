@@ -2,7 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 
 cloudinary.config({
-  cloud_name: "E_Commarce24",
+  cloud_name: "dm8ezv2qu",
   api_key: "154438874932128",
   api_secret: "tf8dUF4_whwQpWpQ3oCA0OguMLo",
 });
