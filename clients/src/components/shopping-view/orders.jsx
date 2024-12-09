@@ -10,38 +10,39 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import AdminOrderDetailsView from "./order-details";
+import ShoppingOrderDetailsView from "./order-details";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllOrdersForAdmin,
-  getOrderDetailsForAdmin,
+  getAllOrdersByUserId,
+  getOrderDetails,
   resetOrderDetails,
-} from "@/store/admin/order-slice";
+} from "@/store/shop/order-slice";
 import { Badge } from "../ui/badge";
 
-function AdminOrdersView() {
+function ShoppingOrders() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { orderList, orderDetails } = useSelector((state) => state.shopOrder);
 
   function handleFetchOrderDetails(getId) {
-    dispatch(getOrderDetailsForAdmin(getId));
+    dispatch(getOrderDetails(getId));
   }
 
   useEffect(() => {
-    dispatch(getAllOrdersForAdmin());
+    dispatch(getAllOrdersByUserId(user?.id));
   }, [dispatch]);
-
-  console.log(orderDetails, "orderList");
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
 
+  console.log(orderDetails, "orderDetails");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>All Orders</CardTitle>
+        <CardTitle>Order History</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -91,7 +92,7 @@ function AdminOrdersView() {
                         >
                           View Details
                         </Button>
-                        <AdminOrderDetailsView orderDetails={orderDetails} />
+                        <ShoppingOrderDetailsView orderDetails={orderDetails} />
                       </Dialog>
                     </TableCell>
                   </TableRow>
@@ -104,4 +105,4 @@ function AdminOrdersView() {
   );
 }
 
-export default AdminOrdersView;
+export default ShoppingOrders;
