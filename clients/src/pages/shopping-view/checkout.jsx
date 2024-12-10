@@ -39,21 +39,25 @@ function ShoppingCheckout() {
         title: "Your cart is empty. Please add items to proceed",
         variant: "destructive",
       });
-
       return;
     }
+
     if (currentSelectedAddress === null) {
       toast({
         title: "Please select one address to proceed.",
         variant: "destructive",
       });
-
       return;
     }
 
+    // Construct order data
     const orderData = {
       userId: user?.id,
       cartId: cartItems?._id,
+      addressInfo: {
+        ...currentSelectedAddress,
+        email: user?.email, // Include email if required by SSLCommerz
+      },
       cartItems: cartItems.items.map((singleCartItem) => ({
         productId: singleCartItem?.productId,
         title: singleCartItem?.title,
@@ -64,62 +68,26 @@ function ShoppingCheckout() {
             : singleCartItem?.price,
         quantity: singleCartItem?.quantity,
       })),
-      addressInfo: {
-        addressId: currentSelectedAddress?._id,
-        address: currentSelectedAddress?.address,
-        city: currentSelectedAddress?.city,
-        pincode: currentSelectedAddress?.pincode,
-        phone: currentSelectedAddress?.phone,
-        notes: currentSelectedAddress?.notes,
-      },
       orderStatus: "pending",
-      paymentMethod: "paypal",
+      paymentMethod: "SSLCommerz",
       paymentStatus: "pending",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
-      paymentId: "",
-      payerId: "",
     };
 
-    //SSL
-    // const orderData = {
-    //   userId: user?.id,
-    //   cartId: cartItems?._id,
-    //   addressInfo: {
-    //     ...currentSelectedAddress,
-    //     email: user?.email, // Add email here
-    //   },
-    //   cartItems: cartItems.items.map((singleCartItem) => ({
-    //     productId: singleCartItem?.productId,
-    //     title: singleCartItem?.title,
-    //     image: singleCartItem?.image,
-    //     price:
-    //       singleCartItem?.salePrice > 0
-    //         ? singleCartItem?.salePrice
-    //         : singleCartItem?.price,
-    //     quantity: singleCartItem?.quantity,
-    //   })),
-    //   orderStatus: "pending",
-    //   paymentMethod: "SSLCommerz",
-    //   paymentStatus: "pending",
-    //   totalAmount: totalCartAmount,
-    //   orderDate: new Date(),
-    //   orderUpdateDate: new Date(),
-    // };
-
+    // Dispatch create order action
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sagor");
-      if (data?.payload?.success) {
-        setIsPaymemntStart(true);
+      if (data?.payload?.success && data?.payload?.approvalURL) {
+        // Redirect to SSLCommerz payment page
+        window.location.href = data.payload.approvalURL;
       } else {
-        setIsPaymemntStart(false);
+        toast({
+          title: "Failed to initiate payment. Please try again.",
+          variant: "destructive",
+        });
       }
     });
-  }
-
-  if (approvalURL) {
-    window.location.href = approvalURL;
   }
 
   return (

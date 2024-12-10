@@ -215,6 +215,13 @@ export const addressFormControls = [
     type: "text",
     placeholder: "Enter your phone number",
   },
+  // {
+  //   label: "Email",
+  //   name: "email",
+  //   componentType: "input",
+  //   type: "text",
+  //   placeholder: "Enter your mail",
+  // },
   {
     label: "Notes",
     name: "notes",

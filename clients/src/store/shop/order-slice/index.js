@@ -21,34 +21,6 @@ export const createNewOrder = createAsyncThunk(
   }
 );
 
-// export const createNewOrder = createAsyncThunk(
-//   "/order/createNewOrder",
-//   async (orderData, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:5000/api/shop/order/create",
-//         orderData
-//       );
-
-//       const { success, approvalURL } = response.data;
-
-//       if (success && approvalURL) {
-//         // Redirect the user to the SSLCommerz payment page
-//         window.location.href = approvalURL;
-//       } else {
-//         return rejectWithValue("Failed to create payment session.");
-//       }
-
-//       return response.data;
-//     } catch (error) {
-//       console.error("Error creating order:", error);
-//       return rejectWithValue(
-//         error.response?.data?.message || "Something went wrong"
-//       );
-//     }
-//   }
-// );
-
 export const capturePayment = createAsyncThunk(
   "/order/capturePayment",
   async ({ paymentId, payerId, orderId }) => {

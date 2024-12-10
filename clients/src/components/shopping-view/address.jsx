@@ -96,6 +96,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
       phone: getCuurentAddress?.phone,
       pincode: getCuurentAddress?.pincode,
       notes: getCuurentAddress?.notes,
+      // email: getCuurentAddress?.email,
     });
   }
 
