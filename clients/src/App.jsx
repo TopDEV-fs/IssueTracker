@@ -21,6 +21,8 @@ import { useEffect } from "react";
 import { Skeleton } from "./components/ui/skeleton";
 import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
+import SearchProducts from "./pages/shopping-view/search";
+import PaymentFailed from "./pages/shopping-view/payment-fail";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -37,9 +39,9 @@ function App() {
   console.log(isLoading, user);
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white">
+    <div className="flex flex-col overflow-hidden bg-white ">
       <Routes>
-        {/* <Route
+        <Route
           path="/"
           element={
             <CheckAuth
@@ -47,7 +49,7 @@ function App() {
               user={user}
             ></CheckAuth>
           }
-        /> */}
+        />
         <Route
           path="/auth"
           element={
@@ -86,7 +88,8 @@ function App() {
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="paypal-return" element={<PaypalReturnPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
-          {/* <Route path="search" element={<SearchProducts />} /> */}
+          <Route path="payment-fail" element={<PaymentFailed />} />
+          <Route path="search" element={<SearchProducts />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />

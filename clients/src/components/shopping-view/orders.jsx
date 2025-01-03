@@ -37,7 +37,7 @@ function ShoppingOrders() {
     if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
 
-  console.log(orderDetails, "orderDetails");
+  console.log(orderDetails, "orderDetais");
 
   return (
     <Card>
@@ -86,9 +86,10 @@ function ShoppingOrders() {
                         }}
                       >
                         <Button
-                          onClick={() =>
-                            handleFetchOrderDetails(orderItem?._id)
-                          }
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleFetchOrderDetails(orderItem?._id);
+                          }}
                         >
                           View Details
                         </Button>

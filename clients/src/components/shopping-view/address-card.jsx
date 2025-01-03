@@ -13,6 +13,7 @@ function AddressCard({
   // Get the logged-in user's email from Redux
   const { user } = useSelector((state) => state.auth);
   const userEmail = user?.email;
+  const userName = user?.userName;
 
   return (
     <Card
@@ -27,7 +28,8 @@ function AddressCard({
           : "border-black"
       }`}
     >
-      <CardContent className="grid p-4 gap-4">
+      <CardContent className={"grid p-4 gap-4"}>
+        <Label>fullName: {userName}</Label>
         <Label>Address: {addressInfo?.address}</Label>
         <Label>City: {addressInfo?.city}</Label>
         <Label>Pincode: {addressInfo?.pincode}</Label>

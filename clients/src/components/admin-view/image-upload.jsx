@@ -14,6 +14,7 @@ function ProductImageUpload({
   uploadedImageUrl,
   setUploadedImageUrl,
   isEditMode,
+  isCustomStyling = false,
 }) {
   const inputRef = useRef(null);
 
@@ -60,8 +61,11 @@ function ProductImageUpload({
   useEffect(() => {
     if (imageFile !== null) uploadImageToCloudinary();
   }, [imageFile]);
+
   return (
-    <div className="w-full  mt-4 max-w-md mx-auto">
+    <div
+      className={`w-full  mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}
+    >
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
       <div
         onDragOver={handleDragOver}

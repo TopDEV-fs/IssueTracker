@@ -6,10 +6,12 @@ import { useLocation } from "react-router-dom";
 
 function PaypalReturnPage() {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const paymentId = params.get("paymentId");
-  const payerId = params.get("PayerID");
+  // const location = useLocation();
+  // const params = new URLSearchParams(location.search);
+  // const paymentId = params.get("paymentId");
+  // const payerId = params.get("PayerID");
+  const paymentId = "123456tr";
+  const payerId = "334568uyt";
 
   useEffect(() => {
     if (paymentId && payerId) {
@@ -37,51 +39,33 @@ function PaypalReturnPage() {
 export default PaypalReturnPage;
 
 // import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-// import axios from "axios"; // Axios for API calls
+// import { capturePayment } from "@/store/shop/order-slice";
 // import { useEffect } from "react";
+// import { useDispatch } from "react-redux";
 // import { useLocation, useNavigate } from "react-router-dom";
 
 // function PaypalReturnPage() {
+//   const dispatch = useDispatch();
 //   const location = useLocation();
-//   const navigate = useNavigate();
 //   const params = new URLSearchParams(location.search);
 //   const paymentId = params.get("paymentId");
-//   const payerId = params.get("PayerID");
+//   // const navigatTo = useNavigate();
 
 //   useEffect(() => {
-//     const handlePaymentCapture = async () => {
-//       if (paymentId && payerId) {
-//         const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
+//     if (paymentId) {
+//       const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
 
-//         try {
-//           // Send the payment details to the backend
-//           const response = await axios.post(
-//             "http://localhost:5000/api/shop/order/capture",
-//             {
-//               paymentId,
-//               payerId,
-//               orderId,
-//             }
-//           );
-
-//           if (response.data.success) {
-//             // Clear the current order ID and redirect to success page
-//             sessionStorage.removeItem("currentOrderId");
-//             navigate("/shop/payment-success");
-//           } else {
-//             // Handle failure, redirect to a failure page or show a message
-//             console.error("Payment capture failed:", response.data.message);
-//             navigate("/shop/payment-failure");
-//           }
-//         } catch (error) {
-//           console.error("Error capturing payment:", error);
-//           navigate("/shop/payment-return");
+//       dispatch(capturePayment({ paymentId, orderId })).then((data) => {
+//         console.log(data);
+//         if (data?.payload?.success) {
+//           sessionStorage.removeItem("currentOrderId");
+//           console.log(window.location.href);
+//           window.location.href = "/shop/payment-success";
+//           // navigatTo("/shop/payment-success");
 //         }
-//       }
-//     };
-
-//     handlePaymentCapture();
-//   }, [paymentId, payerId, navigate]);
+//       });
+//     }
+//   }, [paymentId, dispatch]);
 
 //   return (
 //     <Card>

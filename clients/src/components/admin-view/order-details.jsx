@@ -23,7 +23,7 @@ function AdminOrderDetailsView({ orderDetails }) {
   const dispatch = useDispatch();
   const { toast } = useToast();
 
-  console.log(orderDetails, "orderDetailsorderDetails");
+  console.log(orderDetails, "orderDetails for admin");
 
   function handleUpdateStatus(event) {
     event.preventDefault();

@@ -5,14 +5,11 @@ import UserCartItemsContent from "@/components/shopping-view/cart-items-content"
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { createNewOrder } from "@/store/shop/order-slice";
-import { Navigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-// import { useToast } from "@/components/ui/use-toast";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
-  // const { approvalURL } = useSelector((state) => state.shopOrder);
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
   const dispatch = useDispatch();
@@ -56,6 +53,7 @@ function ShoppingCheckout() {
       cartId: cartItems?._id,
       addressInfo: {
         ...currentSelectedAddress,
+        userName: user?.userName,
         email: user?.email, // Include email if required by SSLCommerz
       },
       cartItems: cartItems.items.map((singleCartItem) => ({
@@ -74,14 +72,18 @@ function ShoppingCheckout() {
       totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
+      paymentId: "",
+      payerId: "",
     };
 
     // Dispatch create order action
     dispatch(createNewOrder(orderData)).then((data) => {
       if (data?.payload?.success && data?.payload?.approvalURL) {
         // Redirect to SSLCommerz payment page
+        setIsPaymemntStart(true);
         window.location.href = data.payload.approvalURL;
       } else {
+        setIsPaymemntStart(false);
         toast({
           title: "Failed to initiate payment. Please try again.",
           variant: "destructive",
@@ -89,10 +91,6 @@ function ShoppingCheckout() {
       }
     });
   }
-
-  // if (approvalURL) {
-  //   console.log(approvalURL);
-  // } else console.log("not found aprovalURL!");
 
   return (
     <div className="flex flex-col">
@@ -119,8 +117,8 @@ function ShoppingCheckout() {
           <div className="mt-4 w-full">
             <Button onClick={handleInitiatePaypalPayment} className="w-full">
               {isPaymentStart
-                ? "Processing Paypal Payment..."
-                : "Checkout with Paypal"}
+                ? "Processing Payment..."
+                : "Checkout with Payment"}
             </Button>
           </div>
         </div>
