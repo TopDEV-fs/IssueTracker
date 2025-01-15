@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
         userName: checkUser.userName,
       },
       "CLIENT_SECRET_KEY",
-      { expiresIn: "60m" }
+      { expiresIn: "7d" }
     );
 
     res.cookie("token", token, { httpOnly: true, secure: false }).json({
@@ -117,4 +117,9 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, loginUser, logoutUser, authMiddleware };
+module.exports = {
+  registerUser,
+  loginUser,
+  logoutUser,
+  authMiddleware,
+};

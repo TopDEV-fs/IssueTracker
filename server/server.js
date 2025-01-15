@@ -19,6 +19,7 @@ const shopSearchRouter = require("./routes/shop/search-route");
 const shopReviewRouter = require("./routes/shop/review-route");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+const getUserRouter = require("./routes/admin/getUser-route");
 
 dbConnection();
 
@@ -47,6 +48,7 @@ app.use(express.json());
 app.use("/api/auth", AuthRouter);
 app.use("/api/admin/products", adminProductsRouter);
 app.use("/api/admin/orders", adminOrderRouter);
+app.use("/api/admin", getUserRouter);
 
 app.use("/api/shop/products", shopProductsRouter);
 app.use("/api/shop/cart", shopCartRouter);

@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   isAuthenticated: false,
+  loggedInUsers: [],
   isLoading: true,
   user: null,
 };
@@ -74,6 +75,19 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
+export const getLoggedInUsers = createAsyncThunk(
+  "/admin/logged-in-users",
+  async () => {
+    const response = await axios.get(
+      "http://localhost:5000/api/admin/logged-in-users",
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -127,6 +141,19 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
+      })
+      .addCase(getLoggedInUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getLoggedInUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.loggedInUsers = action.payload.success
+          ? action.payload.users
+          : [];
+      })
+      .addCase(getLoggedInUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.loggedInUsers = [];
       });
   },
 });

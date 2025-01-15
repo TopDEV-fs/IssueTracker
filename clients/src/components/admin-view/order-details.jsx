@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CommonForm from "../common/form";
 import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
@@ -11,7 +11,8 @@ import {
   updateOrderStatus,
 } from "@/store/admin/order-slice";
 import { useToast } from "@/hooks/use-toast";
-// import { useToast } from "../ui/use-toast";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const initialFormData = {
   status: "",
@@ -22,8 +23,7 @@ function AdminOrderDetailsView({ orderDetails }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { toast } = useToast();
-
-  console.log(orderDetails, "orderDetails for admin");
+  const pageRef = useRef();
 
   function handleUpdateStatus(event) {
     event.preventDefault();
@@ -43,9 +43,23 @@ function AdminOrderDetailsView({ orderDetails }) {
     });
   }
 
+  const downloadPDF = async () => {
+    const element = pageRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF();
+    const imgWidth = 190; // Adjust for page size
+    const pageHeight = 297; // A4 dimensions in mm
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    pdf.save("Admin_Order_Details.pdf");
+  };
+
   return (
     <DialogContent className="sm:max-w-[600px]">
-      <div className="grid gap-6">
+      <div ref={pageRef} className="grid gap-6">
         <div className="grid gap-2">
           <div className="flex mt-6 items-center justify-between">
             <p className="font-medium">Order ID</p>
@@ -76,6 +90,10 @@ function AdminOrderDetailsView({ orderDetails }) {
                     ? "bg-green-500"
                     : orderDetails?.orderStatus === "rejected"
                     ? "bg-red-600"
+                    : orderDetails?.orderStatus === "inProcess"
+                    ? "bg-yellow-600"
+                    : orderDetails?.orderStatus === "delivered"
+                    ? "bg-blue-600"
                     : "bg-black"
                 }`}
               >
@@ -92,7 +110,7 @@ function AdminOrderDetailsView({ orderDetails }) {
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
                 ? orderDetails?.cartItems.map((item) => (
                     <li
-                      key={item}
+                      key={item.title}
                       className="flex items-center justify-between"
                     >
                       <span>Title: {item.title}</span>
@@ -117,7 +135,6 @@ function AdminOrderDetailsView({ orderDetails }) {
             </div>
           </div>
         </div>
-
         <div>
           <CommonForm
             formControls={[
@@ -140,6 +157,12 @@ function AdminOrderDetailsView({ orderDetails }) {
             onSubmit={handleUpdateStatus}
           />
         </div>
+        <button
+          onClick={downloadPDF}
+          className="mt-4 py-2 px-4 rounded bg-blue-500 text-white"
+        >
+          Download Order Details PDF
+        </button>
       </div>
     </DialogContent>
   );

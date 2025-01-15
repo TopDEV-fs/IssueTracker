@@ -12,7 +12,6 @@ export const getFeatureImages = createAsyncThunk(
     const response = await axios.get(
       `http://localhost:5000/api/common/feature/get`
     );
-
     return response.data;
   }
 );
@@ -24,7 +23,27 @@ export const addFeatureImage = createAsyncThunk(
       `http://localhost:5000/api/common/feature/add`,
       { image }
     );
+    return response.data;
+  }
+);
 
+export const updateFeatureImage = createAsyncThunk(
+  "/order/updateFeatureImage",
+  async ({ id, updatedImage }) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/common/feature/update/${id}`,
+      { image: updatedImage }
+    );
+    return response.data;
+  }
+);
+
+export const deleteFeatureImage = createAsyncThunk(
+  "/order/deleteFeatureImage",
+  async (id) => {
+    const response = await axios.delete(
+      `http://localhost:5000/api/common/feature/delete/${id}`
+    );
     return response.data;
   }
 );
@@ -45,6 +64,24 @@ const commonSlice = createSlice({
       .addCase(getFeatureImages.rejected, (state) => {
         state.isLoading = false;
         state.featureImageList = [];
+      })
+      .addCase(addFeatureImage.fulfilled, (state, action) => {
+        state.featureImageList.push(action.payload.data);
+      })
+      .addCase(updateFeatureImage.fulfilled, (state, action) => {
+        const updatedImage = action.payload.data;
+        const index = state.featureImageList.findIndex(
+          (image) => image.id === updatedImage.id
+        );
+        if (index !== -1) {
+          state.featureImageList[index] = updatedImage;
+        }
+      })
+      .addCase(deleteFeatureImage.fulfilled, (state, action) => {
+        const deletedImageId = action.payload.data?._id;
+        state.featureImageList = state.featureImageList.filter(
+          (image) => image.id !== deletedImageId
+        );
       });
   },
 });

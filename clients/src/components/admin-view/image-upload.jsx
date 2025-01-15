@@ -117,3 +117,118 @@ function ProductImageUpload({
 }
 
 export default ProductImageUpload;
+
+// import { Button } from "@/components/ui/button";
+// import {
+//   addFeatureImage,
+//   getFeatureImages,
+//   deleteFeatureImage,
+//   updateFeatureImage,
+// } from "@/store/common-slice";
+// import { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+
+// function AdminDashboard() {
+//   const [imageFile, setImageFile] = useState(null);
+//   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+//   const [imageLoadingState, setImageLoadingState] = useState(false);
+//   const [isEditMode, setIsEditMode] = useState(false); // New state to track edit mode
+//   const [editingImageId, setEditingImageId] = useState(null); // Track the image being edited
+//   const dispatch = useDispatch();
+//   const { featureImageList } = useSelector((state) => state.commonFeature);
+
+//   // Function to handle image upload and saving
+//   function handleUploadFeatureImage() {
+//     if (isEditMode && editingImageId) {
+//       dispatch(
+//         updateFeatureImage({ id: editingImageId, image: uploadedImageUrl })
+//       ).then((data) => {
+//         if (data?.payload?.success) {
+//           dispatch(getFeatureImages());
+//           resetImageState();
+//         }
+//       });
+//     } else {
+//       dispatch(addFeatureImage(uploadedImageUrl)).then((data) => {
+//         if (data?.payload?.success) {
+//           dispatch(getFeatureImages());
+//           resetImageState();
+//         }
+//       });
+//     }
+//   }
+
+//   // Function to handle deleting an image
+//   function handleDeleteFeatureImage(imageId) {
+//     dispatch(deleteFeatureImage(imageId)).then((data) => {
+//       if (data?.payload?.success) {
+//         dispatch(getFeatureImages());
+//       }
+//     });
+//   }
+
+//   // Reset image states after upload or update
+//   function resetImageState() {
+//     setImageFile(null);
+//     setUploadedImageUrl("");
+//     setIsEditMode(false);
+//     setEditingImageId(null);
+//   }
+
+//   useEffect(() => {
+//     dispatch(getFeatureImages());
+//   }, [dispatch]);
+
+//   return (
+//     <div>
+//       <ProductImageUpload
+//         imageFile={imageFile}
+//         setImageFile={setImageFile}
+//         uploadedImageUrl={uploadedImageUrl}
+//         setUploadedImageUrl={setUploadedImageUrl}
+//         setImageLoadingState={setImageLoadingState}
+//         imageLoadingState={imageLoadingState}
+//         isCustomStyling={true}
+//         isEditMode={isEditMode} // Pass down edit mode flag
+//       />
+//       <Button onClick={handleUploadFeatureImage} className="mt-5 w-full mb-5">
+//         {isEditMode ? "Update Image" : "Upload"}
+//       </Button>
+
+//       <h1 className="text-2xl text-black">Uploaded Images..</h1>
+//       <div className="grid grid-cols-4 gap-4 mt-5">
+//         {featureImageList && featureImageList.length > 0
+//           ? featureImageList.map((featureImgItem) => (
+//               <div className="relative" key={featureImgItem.id}>
+//                 <img
+//                   src={featureImgItem.image}
+//                   className="w-full mt-2 border-2 h-full object-cover rounded-t-lg"
+//                   alt="Feature"
+//                 />
+//                 <div className="absolute top-0 right-0 p-2">
+//                   <Button
+//                     onClick={() => {
+//                       setIsEditMode(true);
+//                       setEditingImageId(featureImgItem.id);
+//                       setUploadedImageUrl(featureImgItem.image); // Set the current image to edit
+//                     }}
+//                     className="mr-2"
+//                   >
+//                     Edit
+//                   </Button>
+//                   <Button
+//                     onClick={() => handleDeleteFeatureImage(featureImgItem.id)}
+//                     className="bg-red-500"
+//                   >
+//                     Delete
+//                   </Button>
+//                 </div>
+//               </div>
+//             ))
+//           : null}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default AdminDashboard;

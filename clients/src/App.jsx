@@ -23,6 +23,7 @@ import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
 import PaymentFailed from "./pages/shopping-view/payment-fail";
+import AllUsersForAdmin from "./pages/admin-view/all-users";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -72,6 +73,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="users" element={<AllUsersForAdmin />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>
         <Route

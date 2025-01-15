@@ -70,6 +70,10 @@ function ShoppingOrders() {
                             ? "bg-green-500"
                             : orderItem?.orderStatus === "rejected"
                             ? "bg-red-600"
+                            : orderItem?.orderStatus === "inProcess"
+                            ? "bg-yellow-600"
+                            : orderItem?.orderStatus === "delivered"
+                            ? "bg-blue-600"
                             : "bg-black"
                         }`}
                       >
